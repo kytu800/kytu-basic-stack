@@ -66,6 +66,7 @@ if (app.get('env') === 'development') {
     app.use(require('morgan')('short', {
         "stream": logger.stream
     }));
+    app.use(errorhandler());
     app.use(function(err, req, res, next) {
         res.status(err.status || 500);
         res.render('error', {
@@ -74,7 +75,6 @@ if (app.get('env') === 'development') {
         });
     });
 } else {
-    app.use(errorhandler());
     app.enable('view cache');
     app.use(function(err, req, res, next) {
         res.status(err.status || 500);
