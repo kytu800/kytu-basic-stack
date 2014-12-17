@@ -8,10 +8,10 @@ var local = require('./config/local');
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
-var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var errorhandler = require('errorhandler');
+var logger = require('./util/logger.js');
 
 
 // Session
@@ -63,7 +63,9 @@ app.use(express.static(__dirname + "/public"));
 // Enviroment Configuration
 
 if (app.get('env') === 'development') {
-    app.use(logger('combined'));
+    app.use(require('morgan')('short', {
+        "stream": logger.stream
+    }));
     app.use(function(err, req, res, next) {
         res.status(err.status || 500);
         res.render('error', {
